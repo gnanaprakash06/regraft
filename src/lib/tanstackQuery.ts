@@ -1,0 +1,19 @@
+// src/lib/tanstackQuery.ts
+// Ported from devotional_frontend-main/src/lib/tanstackQuery.ts
+
+import { QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: 1,
+            refetchOnWindowFocus: false,
+            staleTime: 1000 * 60 * 5, // 5 minutes
+        },
+        mutations: {
+            retry: 0,
+        },
+    },
+});
+
+export default queryClient;
