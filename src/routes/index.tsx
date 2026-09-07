@@ -1,36 +1,49 @@
 // src/routes/index.tsx
 // Authenticated and public routes for ReGRAFT
-
+/* eslint-disable react-refresh/only-export-components */
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import AppLayout from "@/layouts/AppLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import RootLayout from "@/layouts/RootLayout";
-import Dashboard from "@/pages/Dashboard";
-import MyCases from "@/pages/MyCases";
-import UploadCase from "@/pages/UploadCase";
-import Notifications from "@/pages/Notifications";
-import AccountSettings from "@/pages/AccountSettings";
-import NotFound from "@/pages/NotFound";
-import { SignInPage } from "@/components/sign-in";
-import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoutes";
+import { Skeleton } from "@/components/ui/skeleton";
+
+// Lazy-loaded route chunks
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const MyCases = lazy(() => import("@/pages/MyCases"));
+const UploadCase = lazy(() => import("@/pages/UploadCase"));
+const Notifications = lazy(() => import("@/pages/Notifications"));
+const AccountSettings = lazy(() => import("@/pages/AccountSettings"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const SignInPage = lazy(() =>
+    import("@/components/sign-in").then((m) => ({ default: m.SignInPage })),
+);
+
+const PageFallback = () => (
+    <div className="space-y-4 p-8">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-64 w-full rounded-2xl" />
+    </div>
+);
 
 export const router = createBrowserRouter([
     {
-        // RootLayout wraps AuthProvider (needs to be inside RouterProvider for useNavigate)
         element: <RootLayout />,
         children: [
-            // ── Public routes (auth pages) ──
             {
                 element: <AuthLayout />,
                 children: [
                     {
                         path: "login",
-                        element: <SignInPage />,
+                        element: (
+                            <Suspense fallback={<PageFallback />}>
+                                <SignInPage />
+                            </Suspense>
+                        ),
                     },
                 ],
             },
-
-            // ── Protected routes (dashboard & core features) ──
             {
                 element: <ProtectedRoute />,
                 children: [
@@ -40,37 +53,56 @@ export const router = createBrowserRouter([
                         children: [
                             {
                                 index: true,
-                                element: <Dashboard />,
+                                element: (
+                                    <Suspense fallback={<PageFallback />}>
+                                        <Dashboard />
+                                    </Suspense>
+                                ),
                             },
-                            {
-                                path: "dashboard",
-                                element: <Navigate to="/" replace />,
-                            },
+                            { path: "dashboard", element: <Navigate to="/" replace /> },
                             {
                                 path: "cases",
-                                element: <MyCases />,
+                                element: (
+                                    <Suspense fallback={<PageFallback />}>
+                                        <MyCases />
+                                    </Suspense>
+                                ),
                             },
                             {
                                 path: "upload",
-                                element: <UploadCase />,
+                                element: (
+                                    <Suspense fallback={<PageFallback />}>
+                                        <UploadCase />
+                                    </Suspense>
+                                ),
                             },
                             {
                                 path: "notifications",
-                                element: <Notifications />,
+                                element: (
+                                    <Suspense fallback={<PageFallback />}>
+                                        <Notifications />
+                                    </Suspense>
+                                ),
                             },
                             {
                                 path: "settings",
-                                element: <AccountSettings />,
+                                element: (
+                                    <Suspense fallback={<PageFallback />}>
+                                        <AccountSettings />
+                                    </Suspense>
+                                ),
                             },
                         ],
                     },
                 ],
             },
-
-            // ── Catch-all ──
             {
                 path: "*",
-                element: <NotFound />,
+                element: (
+                    <Suspense fallback={<PageFallback />}>
+                        <NotFound />
+                    </Suspense>
+                ),
             },
         ],
     },
