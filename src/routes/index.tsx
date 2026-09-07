@@ -1,11 +1,14 @@
 // src/routes/index.tsx
-// Ported from devotional_frontend-main/src/routes/index.tsx
-// Adapted for ReGRAFT's route structure
+// Authenticated and public routes for ReGRAFT
 
 import AppLayout from "@/layouts/AppLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import RootLayout from "@/layouts/RootLayout";
 import Dashboard from "@/pages/Dashboard";
+import MyCases from "@/pages/MyCases";
+import UploadCase from "@/pages/UploadCase";
+import Notifications from "@/pages/Notifications";
+import AccountSettings from "@/pages/AccountSettings";
 import NotFound from "@/pages/NotFound";
 import { SignInPage } from "@/components/sign-in";
 import { createBrowserRouter, Navigate } from "react-router-dom";
@@ -27,7 +30,7 @@ export const router = createBrowserRouter([
                 ],
             },
 
-            // ── Protected routes (dashboard) ──
+            // ── Protected routes (dashboard & core features) ──
             {
                 element: <ProtectedRoute />,
                 children: [
@@ -36,26 +39,29 @@ export const router = createBrowserRouter([
                         element: <AppLayout />,
                         children: [
                             {
-                                element: <Dashboard />,
                                 index: true,
+                                element: <Dashboard />,
                             },
                             {
                                 path: "dashboard",
                                 element: <Navigate to="/" replace />,
                             },
-                            // TODO: Add more protected routes as pages are built
-                            // {
-                            //   path: "patients",
-                            //   element: <Patients />,
-                            // },
-                            // {
-                            //   path: "implants",
-                            //   element: <Implants />,
-                            // },
-                            // {
-                            //   path: "settings",
-                            //   element: <Settings />,
-                            // },
+                            {
+                                path: "cases",
+                                element: <MyCases />,
+                            },
+                            {
+                                path: "upload",
+                                element: <UploadCase />,
+                            },
+                            {
+                                path: "notifications",
+                                element: <Notifications />,
+                            },
+                            {
+                                path: "settings",
+                                element: <AccountSettings />,
+                            },
                         ],
                     },
                 ],

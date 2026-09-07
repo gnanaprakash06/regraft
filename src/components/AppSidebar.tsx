@@ -1,7 +1,4 @@
 // src/components/AppSidebar.tsx
-// Ported from devotional_frontend-main/src/components/AppSidebar.tsx
-// Restyled to match ReGRAFT's blue theme
-
 import { useAuth } from "@/context/AuthProvider";
 import { cn } from "@/lib/utils";
 import menuItems from "@/static/menuConfig";
@@ -13,10 +10,8 @@ import {
     SidebarContent,
     SidebarFooter,
     SidebarGroup,
-    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
-    SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
@@ -28,35 +23,38 @@ const AppSidebar = () => {
     }, [logout]);
 
     return (
-        <Sidebar className="px-1">
+        <Sidebar className="border-r-0 text-white **:data-[slot=sidebar-inner]:bg-linear-to-b **:data-[slot=sidebar-inner]:from-[#1565C0] **:data-[slot=sidebar-inner]:to-[#0D47A1]">
             {/* Brand Header */}
-            <SidebarHeader className="px-4 pt-4">
-                <img
-                    src="/logo/regraft-logo.png"
-                    alt="ReGRAFT"
-                    className="h-8 w-auto object-contain"
-                />
+            <SidebarHeader className="px-5 pt-8 pb-4">
+                <div className="flex items-center">
+                    <img
+                        src="/logo/regraft-logo.png"
+                        alt="ReGRAFT"
+                        className="h-9 w-auto object-contain brightness-110 drop-shadow-sm"
+                    />
+                </div>
             </SidebarHeader>
 
             {/* Navigation */}
-            <SidebarContent className="my-6">
-                <SidebarGroup>
-                    <SidebarGroupLabel className="sr-only">Navigation Links</SidebarGroupLabel>
+            <SidebarContent className="px-3 py-6">
+                <SidebarGroup className="p-0">
                     <nav>
-                        <SidebarMenu className="space-y-1">
+                        <SidebarMenu className="space-y-2">
                             {menuItems.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <NavLink
-                                        className={({ isActive }) =>
-                                            cn(
-                                                "mx-2 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-blue-50 hover:text-blue-700",
-                                                isActive && "bg-blue-50 text-blue-700",
-                                            )
-                                        }
                                         to={item.url}
                                         end={item.url === "/"}
+                                        className={({ isActive }) =>
+                                            cn(
+                                                "flex items-center gap-3.5 rounded-xl px-4 py-3.5 text-sm font-medium transition-all duration-200",
+                                                isActive
+                                                    ? "bg-white font-semibold text-[#1565C0] shadow-md shadow-black/5"
+                                                    : "text-white/80 hover:bg-white/10 hover:text-white",
+                                            )
+                                        }
                                     >
-                                        <item.icon className="h-5 w-5" />
+                                        <item.icon className="size-5 shrink-0" />
                                         <span>{item.title}</span>
                                     </NavLink>
                                 </SidebarMenuItem>
@@ -67,14 +65,14 @@ const AppSidebar = () => {
             </SidebarContent>
 
             {/* Logout Footer */}
-            <SidebarFooter className="pb-4">
-                <SidebarMenuButton
+            <SidebarFooter className="p-4 pt-2">
+                <button
                     onClick={handleLogout}
-                    className="w-full justify-start text-red-600 hover:text-red-700"
+                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-white/80 transition-all hover:bg-white/10 hover:text-white"
                 >
-                    <LogOut className="mr-3 h-4 w-4" />
-                    Logout
-                </SidebarMenuButton>
+                    <LogOut className="size-4 shrink-0" />
+                    <span>Logout</span>
+                </button>
             </SidebarFooter>
         </Sidebar>
     );

@@ -108,7 +108,8 @@ const InputFieldComp = <T extends FieldValues = FieldValues>(
         <FormField
             control={control}
             name={name}
-            render={({ field, fieldState }) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            render={({ field, fieldState }: { field: any; fieldState: any }) => {
                 const { ref: fieldRef, ...fieldProps } = field;
                 const ariaDescribedBy = [descriptionId, fieldState.error ? errorId : undefined]
                     .filter(Boolean)

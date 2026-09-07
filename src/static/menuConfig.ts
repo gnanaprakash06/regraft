@@ -1,25 +1,35 @@
 // src/static/menuConfig.ts
+import { LayoutDashboard, FolderKanban, UploadCloud, Bell, Settings } from "lucide-react";
 
-import { LayoutDashboard, Users, Box, Settings } from "lucide-react";
+export interface MenuItem {
+    title: string;
+    url: string;
+    icon: typeof LayoutDashboard;
+}
 
-const menuItems = [
+const menuItems: MenuItem[] = [
     {
         title: "Dashboard",
         url: "/",
         icon: LayoutDashboard,
     },
     {
-        title: "Patients",
-        url: "/patients",
-        icon: Users,
+        title: "My Case",
+        url: "/cases",
+        icon: FolderKanban,
     },
     {
-        title: "Implants",
-        url: "/implants",
-        icon: Box,
+        title: "Upload Case",
+        url: "/upload",
+        icon: UploadCloud,
     },
     {
-        title: "Settings",
+        title: "Notifications",
+        url: "/notifications",
+        icon: Bell,
+    },
+    {
+        title: "Account Settings",
         url: "/settings",
         icon: Settings,
     },
